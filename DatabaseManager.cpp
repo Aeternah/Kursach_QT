@@ -126,7 +126,7 @@ QStringList DatabaseManager::getTableColumns(const QString &tableName, const QSt
     if (!m_connections.contains(connectionName)) {
         return columns;
     }
-
+ 
     QSqlDatabase db = m_connections[connectionName];
     if (!db.isOpen()) {
         return columns;

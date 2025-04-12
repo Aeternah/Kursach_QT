@@ -78,6 +78,7 @@ test_data/
 
 ### Пользовательские пути сборки ###
 # Игнорируем все каталоги с именем build в любом месте проекта
+<<<<<<< HEAD
 /build*/
 /Debug/
 /Release/
@@ -88,3 +89,15 @@ test_data/
 
 # Но сохраняем CMakeLists.txt в подкаталогах
 !/CMakeLists.txt
+=======
+**/build*/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/
+**/bin/
+**/lib/
+
+# Но сохраняем CMakeLists.txt в подкаталогах
+!**/CMakeLists.txt
+>>>>>>> b200d9ba0945b3874de8e9882b8b1ba2740b87b0
