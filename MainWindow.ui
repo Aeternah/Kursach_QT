@@ -50,6 +50,13 @@
              <item>
               <widget class="QLineEdit" name="leSQLitePath"/>
              </item>
+             <item>
+              <widget class="QPushButton" name="btnBrowse">
+               <property name="text">
+                <string>Browse...</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -308,18 +315,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1000</width>
-     <height>21</height>
-    </rect>
-   </property> 
-   <addaction name="menuFile"/>
-   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

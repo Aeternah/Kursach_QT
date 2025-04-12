@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlQuery>
 #include "DatabaseManager.h"
 
 namespace Ui {
@@ -22,14 +23,16 @@ private slots:
     void onExecuteQuery();
     void onConnectionSelected(int index);
     void onTableSelected(int index);
+    void onExportToCSV();
 
 private:
-    Ui::MainWindow *ui;
-    DatabaseManager *dbManager;
-    
     void updateConnectionsList();
     void updateTablesList(const QString &connectionName);
     void updateQueryResults(QSqlQuery query);
+    void showError(const QString &message);
+
+    Ui::MainWindow *ui;
+    DatabaseManager *dbManager;
 };
 
 #endif // MAINWINDOW_H

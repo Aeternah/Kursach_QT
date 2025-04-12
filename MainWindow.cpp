@@ -3,6 +3,9 @@
 #include <QMessageBox>
 #include <QSqlQueryModel>
 #include <QFileDialog>
+#include <QTextStream>
+#include <QSqlError>  // Для QSqlError
+#include <QSqlRecord>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,47 +13,16 @@ MainWindow::MainWindow(QWidget *parent) :
     dbManager(new DatabaseManager(this))
 {
     ui->setupUi(this);
-    
+
+    // Connect signals and slots
     connect(ui->btnConnect, &QPushButton::clicked, this, &MainWindow::onConnectToDatabase);
     connect(ui->btnDisconnect, &QPushButton::clicked, this, &MainWindow::onDisconnectFromDatabase);
     connect(ui->btnExecute, &QPushButton::clicked, this, &MainWindow::onExecuteQuery);
+    connect(ui->btnExport, &QPushButton::clicked, this, &MainWindow::onExportToCSV);
     connect(ui->cbConnections, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onConnectionSelected);
     connect(ui->cbTables, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onTableSelected);
-    connect(ui->btnBuildQuery, &QPushButton::clicked, this, [this]() {
-        QString tableName = ui->cbTables->currentText();
-        if (!tableName.isEmpty()) {
-            ui->pteQuery->setPlainText("SELECT * FROM " + tableName + " LIMIT 100");
-        }
-    });
-    connect(ui->btnExport, &QPushButton::clicked, this, [this]() {
-        QAbstractItemModel *model = ui->tvResults->model();
-        if (!model) return;
-        
-        QString fileName = QFileDialog::getSaveFileName(this, "Export to CSV", "", "CSV Files (*.csv)");
-        if (fileName.isEmpty()) return;
-        
-        QFile file(fileName);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream out(&file);
-            // Заголовки
-            for (int col = 0; col < model->columnCount(); ++col) {
-                if (col > 0) out << ",";
-                out << "\"" << model->headerData(col, Qt::Horizontal).toString() << "\"";
-            }
-            out << "\n";
-            // Данные
-            for (int row = 0; row < model->rowCount(); ++row) {
-                for (int col = 0; col < model->columnCount(); ++col) {
-                    if (col > 0) out << ",";
-                    out << "\"" << model->data(model->index(row, col)).toString() << "\"";
-                }
-                out << "\n";
-            }
-            file.close();
-        }
-    });
 }
 
 MainWindow::~MainWindow()
@@ -64,32 +36,32 @@ void MainWindow::onConnectToDatabase()
                                          DatabaseManager::SQLite : 
                                          DatabaseManager::PostgreSQL;
     
-    QString connectionName = ui->leConnectionName->text();
+    QString connectionName = ui->leConnectionName->text().trimmed();
     if (connectionName.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please enter connection name");
+        showError("Please enter connection name");
         return;
     }
     
     bool success = false;
     if (dbType == DatabaseManager::SQLite) {
-        QString dbPath = ui->leSQLitePath->text();
+        QString dbPath = ui->leSQLitePath->text().trimmed();
         success = dbManager->connectToDatabase(dbType, connectionName, dbPath);
     } else {
-        QString dbName = ui->lePGDatabase->text();
-        QString host = ui->lePGHost->text();
-        QString user = ui->lePGUser->text();
-        QString password = ui->lePGPassword->text();
+        QString dbName = ui->lePGDatabase->text().trimmed();
+        QString host = ui->lePGHost->text().trimmed();
+        QString user = ui->lePGUser->text().trimmed();
+        QString password = ui->lePGPassword->text().trimmed();
         int port = ui->sbPGPort->value();
         
         success = dbManager->connectToDatabase(dbType, connectionName, dbName, 
                                              host, user, password, port);
     }
     
-    if (!success) {
-        QMessageBox::critical(this, "Connection error", dbManager->lastError());
-    } else {
+    if (success) {
         updateConnectionsList();
         QMessageBox::information(this, "Success", "Connected successfully");
+    } else {
+        showError(dbManager->lastError());
     }
 }
 
@@ -106,13 +78,13 @@ void MainWindow::onExecuteQuery()
 {
     QString connectionName = ui->cbConnections->currentText();
     if (connectionName.isEmpty()) {
-        QMessageBox::warning(this, "Error", "No connection selected");
+        showError("No connection selected");
         return;
     }
     
-    QString queryText = ui->pteQuery->toPlainText();
+    QString queryText = ui->pteQuery->toPlainText().trimmed();
     if (queryText.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Query is empty");
+        showError("Query is empty");
         return;
     }
     
@@ -141,17 +113,51 @@ void MainWindow::onTableSelected(int index)
     }
 }
 
+void MainWindow::onExportToCSV()
+{
+    QAbstractItemModel *model = ui->tvResults->model();
+    if (!model) return;
+    
+    QString fileName = QFileDialog::getSaveFileName(this, "Export to CSV", "", "CSV Files (*.csv)");
+    if (fileName.isEmpty()) return;
+    
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        
+        // Write headers
+        for (int col = 0; col < model->columnCount(); ++col) {
+            if (col > 0) out << ",";
+            out << "\"" << model->headerData(col, Qt::Horizontal).toString().replace("\"", "\"\"") << "\"";
+        }
+        out << "\n";
+        
+        // Write data
+        for (int row = 0; row < model->rowCount(); ++row) {
+            for (int col = 0; col < model->columnCount(); ++col) {
+                if (col > 0) out << ",";
+                out << "\"" << model->data(model->index(row, col)).toString().replace("\"", "\"\"") << "\"";
+            }
+            out << "\n";
+        }
+        
+        file.close();
+        QMessageBox::information(this, "Success", "Data exported successfully");
+    } else {
+        showError("Failed to save file");
+    }
+}
+
 void MainWindow::updateConnectionsList()
 {
     ui->cbConnections->clear();
-    // В реальном проекте нужно получить список активных подключений из DatabaseManager
+    ui->cbConnections->addItems(dbManager->activeConnections());
 }
 
 void MainWindow::updateTablesList(const QString &connectionName)
 {
     ui->cbTables->clear();
-    QStringList tables = dbManager->getTables(connectionName);
-    ui->cbTables->addItems(tables);
+    ui->cbTables->addItems(dbManager->getTables(connectionName));
 }
 
 void MainWindow::updateQueryResults(QSqlQuery query)
@@ -161,6 +167,11 @@ void MainWindow::updateQueryResults(QSqlQuery query)
     ui->tvResults->setModel(model);
     
     if (model->lastError().isValid()) {
-        QMessageBox::warning(this, "Query error", model->lastError().text());
+        showError(model->lastError().text());
     }
+}
+
+void MainWindow::showError(const QString &message)
+{
+    QMessageBox::critical(this, "Error", message);
 }
