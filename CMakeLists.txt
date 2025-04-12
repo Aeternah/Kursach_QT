@@ -17,7 +17,7 @@ set(CMAKE_PREFIX_PATH ${QT_DIR})
 
 # Поиск необходимых компонентов Qt
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql)
- 
+
 if(NOT Qt6_FOUND)
     message(FATAL_ERROR "Qt6 не найден. Проверьте CMAKE_PREFIX_PATH.")
 else()
