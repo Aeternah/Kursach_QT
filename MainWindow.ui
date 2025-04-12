@@ -317,9 +317,7 @@
      <width>1000</width>
      <height>21</height>
     </rect>
-   </property>
-  
-   
+   </property> 
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
   </widget>
