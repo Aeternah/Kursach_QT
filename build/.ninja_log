@@ -1,0 +1,19 @@
+# ninja log v5
+86	931	7661524746613303	MyQtDatabaseApp_autogen/timestamp	36b4cab48f75fd7b
+86	931	7661524746613303	Q:/Kursaaaa/Kursach_QT/build/MyQtDatabaseApp_autogen/mocs_compilation.cpp	36b4cab48f75fd7b
+5334	5936	7661524797015268	MyQtDatabaseApp.exe	2aaeccb74d9f88ce
+86	931	7661524746613303	MyQtDatabaseApp_autogen/mocs_compilation.cpp	36b4cab48f75fd7b
+936	3567	7661524773756676	CMakeFiles/MyQtDatabaseApp.dir/main.cpp.obj	7b29d0834182eb1a
+86	931	7661524746613303	Q:/Kursaaaa/Kursach_QT/build/MyQtDatabaseApp_autogen/timestamp	36b4cab48f75fd7b
+931	3297	7661524771037954	CMakeFiles/MyQtDatabaseApp.dir/MyQtDatabaseApp_autogen/mocs_compilation.cpp.obj	a0d08d70d08b466b
+946	4612	7661524784203987	CMakeFiles/MyQtDatabaseApp.dir/DatabaseManager.cpp.obj	f5b1d77c85855ebd
+941	5333	7661524791226735	CMakeFiles/MyQtDatabaseApp.dir/MainWindow.cpp.obj	8ca9f36465d455fd
+16	823	7661529644065557	MDQT_autogen/timestamp	f0bc4092975776a3
+16	823	7661529644065557	MDQT_autogen/mocs_compilation.cpp	f0bc4092975776a3
+16	823	7661529644065557	Q:/Kursaaaa/Kursach_QT/build/MDQT_autogen/timestamp	f0bc4092975776a3
+16	823	7661529644065557	Q:/Kursaaaa/Kursach_QT/build/MDQT_autogen/mocs_compilation.cpp	f0bc4092975776a3
+823	2982	7661529666574587	CMakeFiles/MDQT.dir/MDQT_autogen/mocs_compilation.cpp.obj	4b4c9ac2b2f7710c
+828	3325	7661529669997011	CMakeFiles/MDQT.dir/main.cpp.obj	7797b5ea67e058ee
+845	4184	7661529678565718	CMakeFiles/MDQT.dir/DatabaseManager.cpp.obj	1d789de32547c17a
+837	4843	7661529685103830	CMakeFiles/MDQT.dir/MainWindow.cpp.obj	91cc263c15f56ee4
+4845	5173	7661529688313279	MDQT.exe	734451fbd73cc6d4

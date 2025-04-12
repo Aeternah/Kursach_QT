@@ -1,0 +1,5 @@
+Q:/Kursaaaa/Kursach_QT/build/CMakeFiles/MDQT.dir
+Q:/Kursaaaa/Kursach_QT/build/CMakeFiles/edit_cache.dir
+Q:/Kursaaaa/Kursach_QT/build/CMakeFiles/rebuild_cache.dir
+Q:/Kursaaaa/Kursach_QT/build/CMakeFiles/MDQT_autogen_timestamp_deps.dir
+Q:/Kursaaaa/Kursach_QT/build/CMakeFiles/MDQT_autogen.dir
