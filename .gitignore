@@ -1,18 +1,19 @@
+### Исключаем ВСЕ CMakeLists.txt ###
+CMakeLists.txt
+**/CMakeLists.txt
+*/CMakeLists.txt
+*/*/CMakeLists.txt
+*/*/*/CMakeLists.txt
+
 ### Qt ###
-# Собранные бинарники
 *.exe
 *.dll
 *.so
 *.dylib
 *.app
-
-# Временные файлы Qt
 Makefile*
 *.qmake.stash
 *.pro.user
-*.autosave
-
-# Автогенерируемые файлы
 moc_*
 qrc_*
 ui_*
@@ -20,84 +21,34 @@ ui_*
 *.qm
 
 ### CMake ###
-# Каталоги сборки CMake
 build/
-*/build/
-*out/
+**/build/
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
-install_manifest.txt
-CTestTestfile.cmake
-*.cmake
 *.ninja
-.ninja_deps
-.ninja_log
+.ninja_*
 
-# IDE
+### IDE ###
 .idea/
 .vscode/
 *.code-workspace
-*.sublime-workspace
-*.sublime-project
 
-# Системные файлы
+### Системные файлы ###
 .DS_Store
 Thumbs.db
-
-# Логи и кэши
-*.log
-*.cache
-*.pid
-*.pid.lock
-
-# Резервные копии
 *~
 *.bak
 *.swp
-*.swo
 
-# Тестовые данные
-*.db
-*.sqlite
-test_data/
+### Бинарные артефакты ###
+*.o
+*.a
+*.lib
+*.dll
+*.exe
+*.out
 
-# Исключения (сохраняем важные файлы)
-!*.cpp
-!*.h
-!*.hpp
-!*.ui
-!*.qrc
-!*.pro
-!*.pri
-!CMakeLists.txt
-!*.cmake.in
-!*.sql
-!README.md
-!LICENSE
-
-### Пользовательские пути сборки ###
-# Игнорируем все каталоги с именем build в любом месте проекта
-<<<<<<< HEAD
-/build*/
-/Debug/
-/Release/
-/x64/
-/x86/
-/bin/
-/lib/
-
-# Но сохраняем CMakeLists.txt в подкаталогах
-!/CMakeLists.txt
-=======
-**/build*/
-**/Debug/
-**/Release/
-**/x64/
-**/x86/
-**/bin/
-**/lib/
-
-# Но сохраняем CMakeLists.txt в подкаталогах
-!**/CMakeLists.txt
->>>>>>> b200d9ba0945b3874de8e9882b8b1ba2740b87b0
+### Логи ###
+*.log
+*.cache
